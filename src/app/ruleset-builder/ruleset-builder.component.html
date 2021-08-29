@@ -1,0 +1,34 @@
+<div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end center" class="container">
+  <button mat-raised-button color="primary" (click)="addNewConditional()">
+    New Conditional
+  </button>
+</div>
+
+<div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="10px" *ngFor="let conditional of conditionals;let i = index" class="container">
+  <div fxLayout="row" fxLayoutAlign="end center">
+    <button mat-icon-button color="warn" (click)="removeConditional(i)">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </div>
+  <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="10px">
+    <app-rule-builder [expression]="conditional.expression"></app-rule-builder>
+
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" class="thenElseContainer"><!-- then -->
+      <span class="text">THEN</span>
+      <mat-form-field appearance="outline" color="primary" class="ifelseInput">
+        <mat-label>Text</mat-label>
+        <input matInput [(ngModel)]="conditional.then">
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" class="thenElseContainer"><!-- else -->
+      <span class="text">ELSE</span>
+      <mat-form-field appearance="outline" color="primary" class="ifelseInput">
+        <mat-label>Text</mat-label>
+        <input matInput [(ngModel)]="conditional.else">
+      </mat-form-field>
+    </div>
+
+  </div>
+  <textarea class="json-container" [value]="conditional | json" disabled></textarea>
+</div>

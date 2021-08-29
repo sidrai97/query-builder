@@ -1,0 +1,109 @@
+<div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="10px"  [ngClass]="{'ruleset-margin': rules == undefined}">
+  <div fxLayout="row" fxLayoutAlign="space-between center"><!-- condition and actions -->
+    <mat-form-field appearance="outline" color="primary" class="conditionSelect">
+      <mat-label>Condition</mat-label>
+      <mat-select [(ngModel)]="expression.condition">
+        <mat-option *ngFor="let condition of conditions" [value]="condition">
+          {{condition}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+      <button mat-raised-button color="primary" (click)="addNewRule()">
+        <mat-icon>add</mat-icon>
+        Rule
+      </button>
+      <button mat-raised-button color="primary" (click)="addNewRuleSet()">
+        <mat-icon>add</mat-icon>
+        RuleSet
+      </button>
+      <button *ngIf="rules != undefined" mat-raised-button color="warn" (click)="removeRuleSet()">
+        <mat-icon>clear</mat-icon>
+        RuleSet
+      </button>
+    </div>
+  </div>
+
+  <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="10px" *ngFor="let rule of expression.rules; let ind = index" class="rules-margin"><!-- rules & rulesets -->
+
+    <ng-container *ngIf="rule.type == ruleTypes[1]">
+      <app-rule-builder [expression]="rule" [rules]="expression.rules" [index]="ind"></app-rule-builder>
+    </ng-container>
+
+    <ng-container *ngIf="rule.type == ruleTypes[0]">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayoutAlign="start center">
+
+          <mat-form-field appearance="outline" color="primary" class="conditionSelect">
+            <mat-label>OperandType</mat-label>
+            <mat-select [(ngModel)]="rule.operand1Type" (selectionChange)="operandTypeChange(rule)">
+              <mat-option *ngFor="let operandType of operandTypes" [value]="operandType">
+                {{operandType | titlecase}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <ng-container *ngIf="rule.operand1Type == operandTypes[0]">
+            <mat-form-field appearance="outline" color="primary" class="columnSelect">
+              <mat-label>Column</mat-label>
+              <mat-select [(ngModel)]="rule.operand1" (selectionChange)="operandChange(rule)">
+                <mat-option *ngFor="let column of columns" [value]="'$'+column.name">
+                  {{column.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
+
+          <ng-container *ngIf="rule.operand1Type == operandTypes[1]">
+            <mat-form-field appearance="outline" color="primary" class="columnSelect">
+              <mat-label>Text</mat-label>
+              <input matInput [(ngModel)]="rule.operand1">
+            </mat-form-field>
+          </ng-container>
+
+          <mat-form-field appearance="outline" color="primary" class="operatorSelect">
+            <mat-label>Operator</mat-label>
+            <mat-select [(ngModel)]="rule.operator">
+              <mat-option *ngFor="let operator of getOperatorType(rule)" [value]="operator">
+                {{operator}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" color="primary" class="conditionSelect">
+            <mat-label>OperandType</mat-label>
+            <mat-select [(ngModel)]="rule.operand2Type">
+              <mat-option *ngFor="let operandType of operandTypes" [value]="operandType">
+                {{operandType | titlecase}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <ng-container *ngIf="rule.operand2Type == operandTypes[0]">
+            <mat-form-field appearance="outline" color="primary" class="columnSelect">
+              <mat-label>Column</mat-label>
+              <mat-select [(ngModel)]="rule.operand2">
+                <mat-option *ngFor="let column of columns" [value]="'$'+column.name">
+                  {{column.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
+
+          <ng-container *ngIf="rule.operand2Type == operandTypes[1]">
+            <mat-form-field appearance="outline" color="primary" class="columnSelect">
+              <mat-label>Text</mat-label>
+              <input matInput [(ngModel)]="rule.operand2">
+            </mat-form-field>
+          </ng-container>
+
+        </div>
+        <button mat-icon-button color="warn" (click)="removeRule(ind)">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
+    </ng-container>
+
+  </div>
+</div>
