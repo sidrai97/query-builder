@@ -1,6 +1,7 @@
 # QueryBuilder
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.6.
+## Description
+Angular query builder using angular material & flex-layout
 
 ## Development server
 
